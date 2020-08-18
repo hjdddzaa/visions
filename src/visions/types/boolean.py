@@ -32,12 +32,8 @@ def _get_relations(cls) -> Sequence[TypeRelation]:
         InferenceRelation(
             cls,
             String,
-            relationship=lambda s: coercion_map_test(cls.string_coercions)(
-                s.str.lower()
-            ),
-            transformer=lambda s: to_bool(
-                coercion_map(cls.string_coercions)(s.str.lower())
-            ),
+            relationship=lambda s: coercion_map_test(cls.string_coercions)(s),
+            transformer=lambda s: to_bool(coercion_map(cls.string_coercions)(s)),
         ),
         InferenceRelation(
             cls, Object, relationship=object_is_bool, transformer=to_bool

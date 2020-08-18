@@ -87,17 +87,25 @@ def coercion_equality_test(method: Callable) -> Callable:
 def coercion_single_map_test(mapping: List[Dict]) -> Callable:
     def f(series: pd.Series) -> bool:
         # TODO: None value
-        return any(
-            series.isin(list(single_map.keys()) + [None]).all()
-            for single_map in mapping
-        )
+        try:
+            series_lower = series.str.lower()
+            return any(
+                series_lower.isin(list(single_map.keys()) + [None]).all()
+                for single_map in mapping
+            )
+        except:
+            return False
 
     return f
 
 
 def coercion_multi_map_test(mapping: Dict) -> Callable:
     def f(series: pd.Series) -> bool:
-        return series.isin(list(mapping.keys()) + [None]).all()
+        try:
+            series_lower = series.str.lower()
+            return series_lower.isin(list(mapping.keys()) + [None]).all()
+        except:
+            return False
 
     return f
 

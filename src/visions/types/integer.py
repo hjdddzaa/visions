@@ -17,12 +17,16 @@ def to_int(series: pd.Series) -> pd.Series:
 
 
 def float_is_int(series: pd.Series) -> bool:
-    def check_equality(series):
-        if series.empty or not np.isfinite(series).all():
-            return False
-        return series.eq(series.astype(int)).all()
+    try:
 
-    return check_equality(series.dropna() if series.hasnans else series)
+        def check_equality(series):
+            if series.empty or not np.isfinite(series).all():
+                return False
+            return series.eq(series.astype(int)).all()
+
+        return check_equality(series.dropna() if series.hasnans else series)
+    except:
+        return False
 
 
 def test_string_is_int(series) -> bool:
